@@ -1,0 +1,56 @@
+from PIL import Image
+
+COLUMNS = 4
+ROWS = 3
+
+def FileToList(path):
+    file = open(path)
+    img_names = [line.strip() for line in file]
+    file.close()
+    return img_names
+
+def OpenImages(iNames):
+    images = [Image.open(x) for x in iNames]
+    return images
+
+def CreateNewBlankImage(images, row, col):
+    imageWidth  = images[0].size[0] * col
+    imageHeight = images[0].size[1] * row
+    newImage = Image.new('RGB', (imageWidth, imageHeight))
+    return newImage
+    
+def AddIndividualImagesToNewImage(work_image, images):
+    x = 0
+    y = 0
+    count = 0
+    
+    for img in images:
+        work_image.paste(img, (x,y))
+        x += img.size[0]
+        
+        count += 1
+        if count > ROWS:
+            count = 0;
+            y += img.size[1]
+            x = 0
+            
+    return work_image
+
+            
+def ResizeImage(image):
+    scale = 10
+    width = int(image.size[0]/scale)
+    height = int(image.size[1]/scale)
+    resizedImage = image.resize((width, height))
+    return resizedImage
+    
+imageNames = FileToList('image_list.txt')  
+imgs = OpenImages(imageNames)
+
+blank_img = CreateNewBlankImage(imgs, ROWS, COLUMNS)
+new_img = AddIndividualImagesToNewImage(blank_img, imgs)
+scaled_img = ResizeImage(new_img)
+
+scaled_img.save('NewImage.jpg')
+
+
