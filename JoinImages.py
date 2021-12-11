@@ -44,13 +44,17 @@ def ResizeImage(image):
     height = int(image.size[1]/scale)
     resizedImage = image.resize((width, height))
     return resizedImage
-    
-imageNames = FileToList('image_list.txt')  
-imgs = OpenImages(imageNames)
 
-blank_img = CreateNewBlankImage(imgs, ROWS, COLUMNS)
-new_img = AddIndividualImagesToNewImage(blank_img, imgs)
-scaled_img = ResizeImage(new_img)
-scaled_img.save('NewImage.jpg')
+def Main():
+    imageNames = FileToList('image_list.txt')  
+    imgs = OpenImages(imageNames)
+
+    blank_img = CreateNewBlankImage(imgs, ROWS, COLUMNS)
+    new_img = AddIndividualImagesToNewImage(blank_img, imgs)
+    scaled_img = ResizeImage(new_img)
+    scaled_img.save('NewImage.jpg')
+    
+if __name__ == '__main__':
+    Main()
 
 
